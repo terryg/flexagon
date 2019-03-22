@@ -1,16 +1,14 @@
-# node-js-getting-started
+# flexagaon
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
-
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+A barebones Node.js app using [Express 4](http://expressjs.com/) and [Three.js](http://threejs.org/) for deployment to [Heroku](http://heroku.com/)
 
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
 ```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
+$ git clone git clone https://terrylorber@bitbucket.org/metatooth/flexagon.git # or clone your own fork
+$ cd flexagon
 $ npm install
 $ npm start
 ```
