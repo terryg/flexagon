@@ -13,7 +13,7 @@ main = function()
   var scene = new THREE.Scene();
   var camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 1, 1000 );
   camera.lookAt(0,0,0);
-  camera.zoom = 50;
+  camera.zoom = 100;
   camera.updateProjectionMatrix();
   
   //var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -58,42 +58,19 @@ main = function()
   var meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
 
   var r = 1;
+
+  var thirty = degrees_to_radians(30);
+  var fortyfive = degrees_to_radians(45);
+  var sixty =  degrees_to_radians(60 );
+  var ninety = degrees_to_radians(90);
+  var onetwenty =  degrees_to_radians(120 );
+  var oneeighty = degrees_to_radians(180);
   
-  var thirty = 30;
-  var fortyfive = 45;
-  var sixty = 60;
-  var ninety = 90;
-  var onetwenty = 120;
+  var tanThirty = Math.tan( thirty );
 
-  var sinThirty = Math.sin( degrees_to_radians( thirty ) );
-  var cosThirty = Math.cos( degrees_to_radians( thirty ) );
-  var tanThirty = Math.tan( degrees_to_radians( thirty ) );
-  var sinSixty = Math.sin( degrees_to_radians( sixty ) );
-  var cosSixty = Math.cos( degrees_to_radians( sixty ) );
-  var tanSixty = Math.tan( degrees_to_radians( sixty ) );
-  var sinFortyFive = Math.sin( degrees_to_radians( fortyfive ) );
-  var cosFortyFive = Math.cos( degrees_to_radians( fortyfive ) );
-  var tanFortyFive = Math.tan( degrees_to_radians( fortyfive ) );
-  var sinOneTwenty = Math.sin( degrees_to_radians( onetwenty ) );
-  var cosOneTwenty = Math.cos( degrees_to_radians( onetwenty ) );
-  var tanOneTwenty = Math.tan( degrees_to_radians( onetwenty ) );
-  var sinNinety = Math.sin( degrees_to_radians( ninety ) );
-  var cosNinety = Math.cos( degrees_to_radians( ninety ) );
-  var tanNinety = Math.tan( degrees_to_radians( ninety ) );
+  var sinFortyFive = Math.sin( fortyfive );
 
-  console.log(r * sinThirty);
-  console.log(r * sinFortyFive);
-  console.log(r * sinSixty);
-
-  console.log(r * cosThirty);
-  console.log(r * cosFortyFive);
-  console.log(r * cosSixty);
-
-  console.log(r * tanThirty);
-  console.log(r * tanFortyFive);
-  console.log(r * tanSixty);
-
-  for (var i = 0; i < 6; i++) {
+  for (var i = 0; i < 2; i++) {
     group.add( new THREE.LineSegments( geometry, lineMaterial ) );
     group.add( new THREE.Mesh( geometry, meshMaterial ) );
 
@@ -105,18 +82,18 @@ main = function()
     var origin = new THREE.Matrix4().makeTranslation( -tanThirty, -tanThirty, -tanThirty );
     tetra.applyMatrix(origin);  
     
-    if (i % 2 == 0) {
-      var flipMat = new THREE.Matrix4().makeRotationX( degrees_to_radians( 180 ) );   
+    if (i % 2 == 1) {
+      var flipMat = new THREE.Matrix4().makeRotationX( oneeighty );   
       tetra.applyMatrix(flipMat);
       
-      var flopMat = new THREE.Matrix4().makeRotationZ( degrees_to_radians( 90 ) );   
+      var flopMat = new THREE.Matrix4().makeRotationZ( ninety );   
       tetra.applyMatrix(flopMat);
     }
 
     var times = Math.floor(i / 2);
     console.log(times);
     var axis = new THREE.Vector3(-sinFortyFive, sinFortyFive, 0);
-    var rotation = new THREE.Matrix4().makeRotationAxis( axis, degrees_to_radians( times*onetwenty ) );   
+    var rotation = new THREE.Matrix4().makeRotationAxis( axis, times*onetwenty );   
     tetra.applyMatrix(rotation);
           
     group.children[ 2*i ].geometry = new THREE.WireframeGeometry( tetra );
@@ -125,16 +102,33 @@ main = function()
   
   scene.add( group );
 
-  //var axes = new THREE.AxesHelper(10);
-  //scene.add(axes);
+  const axes = new THREE.AxesHelper(10);
+  scene.add(axes);
+
+  const frequency = 0.1;
+  const clock = new THREE.Clock();
   
-  var animate = function () {
+  const animate = function () {
     requestAnimationFrame( animate );
 
     controls.update();
+
+    console.log(clock.getElapsedTime());
     
-    group.rotation.x += 0.01;
-    group.rotation.y += 0.01;
+    for (let i = 0; i < 2; ++i) {
+
+      if (i % 2 == 0) {
+        const axis = new THREE.Vector3(-sinFortyFive, -sinFortyFive, 0);
+        const rotation = new THREE.Matrix4().makeRotationAxis( axis, 0.01 );
+
+        group.children[ 2*i ].geometry.applyMatrix(rotation);
+        group.children[ 2*i+1 ].geometry.applyMatrix(rotation);
+      }
+      
+    }
+    
+    //group.rotation.x += 0.01;
+    //group.rotation.y += 0.01;
     
     renderer.render( scene, camera );
   };
