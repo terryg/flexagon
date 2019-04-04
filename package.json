@@ -16,6 +16,7 @@
     "three": "^0.102.1"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
     "request": "^2.81.0",
     "tape": "^4.7.0"
   },
