@@ -7,7 +7,7 @@ A barebones Node.js app using [Express 4](http://expressjs.com/) and [Three.js](
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
 ```sh
-$ git clone git clone https://terrylorber@bitbucket.org/metatooth/flexagon.git # or clone your own fork
+$ git clone https://github.com/terryg/flexagon.git # or clone your own fork
 $ cd flexagon
 $ npm install
 $ npm start
