@@ -152,29 +152,25 @@ main = function()
 	//group_alpha.applyMatrix(position_b_alpha);
 	//group_beta.applyMatrix(position_b_beta);
 
-	for (let i = 0; i < 0; ++i) {
-            const times = Math.floor(i / 2);
+	for (let i = 0; i < 3; ++i) {
+	    let sub = group.children[ i ];
 
-            if (i % 2 == 0) {
+	    {
 		const flap = new THREE.Vector3(-sinFortyFive, -sinFortyFive, 0);
-		flap.applyAxisAngle( axis, times*onetwenty );   
-
 		const rotation = new THREE.Matrix4().makeRotationAxis( flap, flip*incr );
 
-		group_alpha.children[ 2*i ].geometry.applyMatrix(rotation);
-		group_alpha.children[ 2*i+1 ].geometry.applyMatrix(rotation);
+		sub.children[ 0 ].geometry.applyMatrix(rotation);
+		sub.children[ 1 ].geometry.applyMatrix(rotation);
+	    }
 
-            } else {
+	    
+	    {
 		const flap = new THREE.Vector3(sinFortyFive, sinFortyFive, 0);
-		flap.applyAxisAngle( axis, times*onetwenty );   
-
 		const rotation = new THREE.Matrix4().makeRotationAxis( flap, flip*incr );
 
-		group_alpha.children[ 2*i ].geometry.applyMatrix(rotation);
-		group_alpha.children[ 2*i+1 ].geometry.applyMatrix(rotation);
-
-            }
-            
+		sub.children[ 2 ].geometry.applyMatrix(rotation);
+		sub.children[ 3 ].geometry.applyMatrix(rotation);
+	    }
 	}
 	
 	//group.rotation.x += 0.01;
