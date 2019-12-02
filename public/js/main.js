@@ -85,38 +85,39 @@ main = function()
     console.log(theta);
     
     const axis = new THREE.Vector3(-sinFortyFive, sinFortyFive, 0);
-
-    for (let i = 0; i < 6; i++) {
-	group.add( new THREE.LineSegments( geometry, lineMaterial ) );
-	group.add( new THREE.Mesh( geometry, meshMaterial ) );
-
-	group.children[ 2*i ].geometry.dispose();
-	group.children[ 2*i+1 ].geometry.dispose();
-
-	const tetra = new THREE.TetrahedronGeometry( r, 0 );
-	const origin = new THREE.Matrix4().makeTranslation( -tanThirty, -tanThirty, -tanThirty );
-	tetra.applyMatrix(origin);  
-	
-	if (i % 2 == 1) {
-            const flipMat = new THREE.Matrix4().makeRotationX( oneeighty );   
-            tetra.applyMatrix(flipMat);
-            
-            const flopMat = new THREE.Matrix4().makeRotationZ( ninety );   
-            tetra.applyMatrix(flopMat);
-	}
-
-	const times = Math.floor(i / 2);
-	const rotation = new THREE.Matrix4().makeRotationAxis( axis, times*onetwenty );   
-	tetra.applyMatrix(rotation);
-        
-	group.children[ 2*i ].geometry = new THREE.WireframeGeometry( tetra );
-	group.children[ 2*i+1 ].geometry = tetra;
-    }
+    const build = new Builder();
     
+    for (let i = 0; i < 3; i++) {
+	const tetras = build.tetras();
+
+	const rotation = new THREE.Matrix4().makeRotationAxis( axis, i*onetwenty );   
+	tetras.applyMatrix(rotation);
+        
+	group.add(tetras);
+    }
+
+    const offset_a_alpha = new THREE.Vector3(r/2,r/2,0);
+    const offset_b_alpha = new THREE.Vector3(-r/2,-r/2,0);
+	
+    const position_a_alpha = new THREE.Matrix4();
+    position_a_alpha.setPosition(offset_a_alpha);
+
+    const position_b_alpha = new THREE.Matrix4();
+    position_b_alpha.setPosition(offset_b_alpha);
+
+    const offset_a_beta = new THREE.Vector3(r/2,r/2,0);
+    const offset_b_beta = new THREE.Vector3(-r/2,-r/2,0);
+	
+    const position_a_beta = new THREE.Matrix4();
+    position_a_beta.setPosition(offset_a_beta);
+
+    const position_b_beta = new THREE.Matrix4();
+    position_b_beta.setPosition(offset_b_beta);
+
     scene.add( group );
 
-    //const axes = new THREE.AxesHelper(10);
-    //scene.add(axes);
+    const axes = new THREE.AxesHelper(10);
+    scene.add(axes);
 
     let current = 0;
     let flip = 1;
@@ -134,8 +135,24 @@ main = function()
 	} else if (current < -theta) {
             flip *= -1;
 	}
-	
-	for (let i = 0; i < 6; ++i) {
+
+	const x = new THREE.Vector3(1, 0, 0);
+	const y = new THREE.Vector3(0, 1, 0);
+	const z = new THREE.Vector3(0, 0, 1);
+	const rotate_exx = new THREE.Matrix4().makeRotationAxis( x, incr );
+	const rotate_why = new THREE.Matrix4().makeRotationAxis( y, incr );
+	const rotate_zed = new THREE.Matrix4().makeRotationAxis( z, incr );
+
+	//group_alpha.applyMatrix(position_a_alpha);
+	//group_beta.applyMatrix(position_a_beta);
+
+	//group_alpha.applyMatrix(rotate_zed);
+	//group_beta.applyMatrix(rotate_why);
+
+	//group_alpha.applyMatrix(position_b_alpha);
+	//group_beta.applyMatrix(position_b_beta);
+
+	for (let i = 0; i < 0; ++i) {
             const times = Math.floor(i / 2);
 
             if (i % 2 == 0) {
@@ -144,8 +161,8 @@ main = function()
 
 		const rotation = new THREE.Matrix4().makeRotationAxis( flap, flip*incr );
 
-		group.children[ 2*i ].geometry.applyMatrix(rotation);
-		group.children[ 2*i+1 ].geometry.applyMatrix(rotation);
+		group_alpha.children[ 2*i ].geometry.applyMatrix(rotation);
+		group_alpha.children[ 2*i+1 ].geometry.applyMatrix(rotation);
 
             } else {
 		const flap = new THREE.Vector3(sinFortyFive, sinFortyFive, 0);
@@ -153,8 +170,8 @@ main = function()
 
 		const rotation = new THREE.Matrix4().makeRotationAxis( flap, flip*incr );
 
-		group.children[ 2*i ].geometry.applyMatrix(rotation);
-		group.children[ 2*i+1 ].geometry.applyMatrix(rotation);
+		group_alpha.children[ 2*i ].geometry.applyMatrix(rotation);
+		group_alpha.children[ 2*i+1 ].geometry.applyMatrix(rotation);
 
             }
             
