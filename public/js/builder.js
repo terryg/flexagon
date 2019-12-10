@@ -12,7 +12,7 @@ Builder = function( object, domElement ) {
 	geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( [], 3 ) );
 
 	const lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
-	const meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
+	const meshMaterial = new THREE.MeshPhongMaterial( { color: 0xff33bb, emissive: 0xff33bb, side: THREE.DoubleSide, flatShading: true } );
 
 	const one_eighty = Math.PI;
 	const ninety = one_eighty / 2;
